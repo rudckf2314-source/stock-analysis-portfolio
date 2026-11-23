@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+cache/
+logs/
+vector_db/
+uploads/

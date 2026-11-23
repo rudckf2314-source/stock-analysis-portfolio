@@ -1,0 +1,253 @@
+/* ============================================================
+   Unified Side Menu (☰)
+   ============================================================ */
+
+.side-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    /* 배경 제거 */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    /* 그림자 제거 */
+}
+
+.side-menu-toggle:hover {
+    background: rgba(59, 130, 246, 0.08);
+    /* 연한 블루 호버 */
+    transform: translateY(0);
+}
+
+.menu-icon {
+    /* 공통 스타일 제거 또는 유지 */
+    line-height: 1;
+}
+
+.fi-logo {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    /* 더 얇게 (800 -> 600) */
+    font-size: 2.2rem;
+    /* 크기 키움 */
+    letter-spacing: -1px;
+    /* text-transform 제어는 HTML text에 맡김 (Fi) */
+    font-style: normal;
+    /* 이탤릭 제거 */
+    color: #3b82f6;
+    /* 파란색 텍스트 */
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    height: 100vh;
+    background: white;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu.active {
+    right: 0;
+}
+
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.side-menu-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.side-menu-close {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-menu-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.side-menu-tabs {
+    display: flex;
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.side-menu-tab {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #718096;
+    border-bottom: 3px solid transparent;
+}
+
+.side-menu-tab.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: white;
+}
+
+.side-menu-tab:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.side-tab-label {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.side-menu-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.side-menu-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hot Stocks in Side Menu */
+.hot-stocks-container {
+    padding: 1.5rem;
+}
+
+.hot-stocks-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.hot-stocks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.hot-stock-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hot-stock-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.hot-stock-rank {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.hot-stock-name {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.hot-stock-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.hot-stock-ticker {
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.hot-stock-change {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.hot-stock-change.positive {
+    color: #e53e3e;
+}
+
+.hot-stock-change.negative {
+    color: #3182ce;
+}
+
+/* Overlay */
+.side-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.side-menu-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .side-menu {
+        width: 100%;
+        right: -100%;
+    }
+}

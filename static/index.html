@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Financial Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 메인 스타일 -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- 포트폴리오 관련 스타일 -->
+    <link rel="stylesheet" href="portfolio.css" />
+    <!-- Fund Manager 스타일 -->
+    <link rel="stylesheet" href="fund_manager.css?v=2.0" />
+    <!-- ... -->
+    <script src="fund_manager.js?v=2.0"></script>
+    <!-- Side Menu 스타일 -->
+    <link rel="stylesheet" href="side_menu.css" />
+    <!-- Skeleton 로딩 스타일 -->
+    <link rel="stylesheet" href="skeleton.css" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <h1 class="logo-text">Financial Dashboard</h1>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="dashboard">
+                        <span class="tab-icon"></span>
+                        <span class="tab-label">Dashboard</span>
+                    </button>
+                    <button class="nav-tab" data-tab="analytics">
+                        <span class="tab-icon"></span>
+                        <span class="tab-label">Analytics</span>
+                    </button>
+                    <button class="nav-tab" data-tab="fund-manager">
+                        <span class="tab-icon"></span>
+                        <span class="tab-label">Fund Manager</span>
+                    </button>
+                </nav>
+                <button class="side-menu-toggle" id="sideMenuToggle">
+                    <span class="menu-icon fi-logo">Fi</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" data-tab-content="dashboard">
+                <div class="dashboard-layout">
+                    <!-- Main Content Column -->
+                    <div class="dashboard-main">
+                        <!-- Market Indicators Section -->
+                        <section class="section">
+                            <div class="section-header">
+                                <h2 class="section-title">시장 지표</h2>
+                                <div class="market-tabs">
+                                    <button class="market-tab active" data-market="us">미국 시장</button>
+                                    <button class="market-tab" data-market="korea">국내 시장</button>
+                                </div>
+                                <div class="refresh-badge">
+                                    <span class="pulse-dot"></span>
+                                    <span id="lastUpdate">실시간</span>
+                                </div>
+                            </div>
+
+                            <!-- US Market Indicators -->
+                            <div class="market-section" data-market-section="us">
+                                <div class="indicators-grid" id="usIndicators">
+                                    <!-- Populated by JS -->
+                                    <div class="indicator-skeleton">
+                                        <div class="indicator-skeleton-header">
+                                            <div class="indicator-skeleton-label"></div>
+                                            <div class="indicator-skeleton-badge"></div>
+                                        </div>
+                                        <div class="indicator-skeleton-value"></div>
+                                        <div class="indicator-skeleton-change"></div>
+                                    </div>
+                                    <div class="indicator-skeleton">
+                                        <div class="indicator-skeleton-header">
+                                            <div class="indicator-skeleton-label"></div>
+                                            <div class="indicator-skeleton-badge"></div>
+                                        </div>
+                                        <div class="indicator-skeleton-value"></div>
+                                        <div class="indicator-skeleton-change"></div>
+                                    </div>
+                                    <div class="indicator-skeleton">
+                                        <div class="indicator-skeleton-header">
+                                            <div class="indicator-skeleton-label"></div>
+                                            <div class="indicator-skeleton-badge"></div>
+                                        </div>
+                                        <div class="indicator-skeleton-value"></div>
+                                        <div class="indicator-skeleton-change"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Korea Market Indicators -->
+                            <div class="market-section" data-market-section="korea" style="display: none;">
+                                <div class="indicators-grid" id="koreaIndicators">
+                                    <!-- Populated by JS -->
+                                    <div class="indicator-skeleton">
+                                        <div class="indicator-skeleton-header">
+                                            <div class="indicator-skeleton-label"></div>
+                                            <div class="indicator-skeleton-badge"></div>
+                                        </div>
+                                        <div class="indicator-skeleton-value"></div>
+                                        <div class="indicator-skeleton-change"></div>
+                                    </div>
+                                    <div class="indicator-skeleton">
+                                        <div class="indicator-skeleton-header">
+                                            <div class="indicator-skeleton-label"></div>
+                                            <div class="indicator-skeleton-badge"></div>
+                                        </div>
+                                        <div class="indicator-skeleton-value"></div>
+                                        <div class="indicator-skeleton-change"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Portfolio Section -->
+                        <section class="section">
+                            <div class="section-header">
+                                <h2 class="section-title">My Portfolio</h2>
+                            </div>
+
+                            <!-- Portfolio Search -->
+                            <div class="portfolio-search-container">
+                                <div class="portfolio-search-box">
+                                    <div class="portfolio-search-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </div>
+                                    <input type="text" class="portfolio-search-input" id="portfolioSearchInput"
+                                        placeholder="종목 추가 (티커 또는 종목명)" autocomplete="off" />
+                                </div>
+                                <div class="portfolio-search-results" id="portfolioSearchResults"
+                                    style="display: none;"></div>
+                            </div>
+
+                            <!-- Portfolio Grid -->
+                            <div class="portfolio-empty" id="portfolioEmpty" style="display: block;">
+                                <p>포트폴리오에 종목을 추가해보세요</p>
+                            </div>
+                            <div class="portfolio-grid" id="portfolioGrid" style="display: none;"></div>
+                        </section>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div class="tab-content" data-tab-content="analytics">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">종목 분석</h2>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <div class="search-box">
+                            <span class="search-icon"></span>
+                            <input type="text" class="search-input" id="stockSearch"
+                                placeholder="종목명 또는 티커 입력 (예: 삼성전자, AAPL, 005930)" autocomplete="off" />
+                            <button class="search-clear" id="searchClear" style="display: none;">✕</button>
+                        </div>
+                        <div class="search-results" id="searchResults" style="display: none;"></div>
+                    </div>
+
+                    <!-- Analysis Results -->
+                    <div class="analysis-container" id="analysisContainer" style="display: none;">
+                        <!-- Loading State -->
+                        <div class="loading-overlay" id="analysisLoading">
+                            <p class="loading-text">분석 중...</p>
+                            <p class="loading-status" id="loadingStatus">시장 데이터를 수집하고 있습니다...</p>
+                        </div>
+
+                        <!-- Analysis Content -->
+                        <div class="analysis-content" id="analysisContent">
+                            <!-- Sub Tabs Navigation -->
+                            <div class="sub-nav-tabs">
+                                <button class="sub-nav-tab active" data-sub-tab="analysis">
+                                    <span></span> 종목 분석
+                                </button>
+                                <button class="sub-nav-tab" data-sub-tab="news">
+                                    <span></span> 관련 뉴스
+                                </button>
+                                <button class="sub-nav-tab" data-sub-tab="chart">
+                                    <span></span> 주가 흐름
+                                </button>
+                                <button class="sub-nav-tab" data-sub-tab="logs">
+                                    <span></span> 분석 로그
+                                </button>
+                            </div>
+
+                            <!-- Tab 1: Analysis (종목 분석) -->
+                            <div class="sub-tab-content active" data-sub-tab-content="analysis">
+                                <!-- Analysis Target Header -->
+                                <div class="analysis-target-header" id="analysisTargetHeader" style="display: none;">
+                                    <div class="analysis-target-label">현재 분석 종목</div>
+                                    <div class="analysis-target-value" id="analysisTargetValue">-</div>
+                                </div>
+                                <!-- Action Card -->
+                                <div class="action-card" id="actionCard">
+                                    <div class="action-label">투자 판단</div>
+                                    <div class="action-value" id="actionValue">-</div>
+                                </div>
+
+                                <!-- Scores Grid -->
+                                <div class="scores-grid" id="scoresGrid">
+                                    <!-- Score cards populated by JS -->
+                                </div>
+
+                                <!-- Metrics Grid -->
+                                <div class="metrics-section">
+                                    <h3 class="metrics-title">주요 지표</h3>
+                                    <div class="metrics-grid" id="metricsGrid">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Fundamentals -->
+                                <div class="fundamentals-section" id="fundamentalsSection">
+                                    <h3 class="fundamentals-title">재무제표</h3>
+                                    <div class="fundamentals-grid" id="fundamentalsGrid">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+
+                                <!-- AI Commentary -->
+                                <div class="commentary-card" id="commentaryCard">
+                                    <h3 class="commentary-title">AI 분석 코멘트</h3>
+                                    <div class="commentary-content" id="commentaryContent">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab 2: News (관련 뉴스) -->
+                            <div class="sub-tab-content" data-sub-tab-content="news">
+                                <div class="news-section" id="newsSection">
+                                    <h3 class="news-title">관련 뉴스</h3>
+                                    <div class="news-container" id="newsContainer">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab 3: Chart (주가 흐름) -->
+                            <div class="sub-tab-content" data-sub-tab-content="chart">
+                                <div class="chart-section">
+                                    <div class="chart-header">
+                                        <h3 class="chart-title">가격 추이</h3>
+                                        <div class="chart-controls">
+                                            <button class="chart-period-btn" data-period="1w">1W</button>
+                                            <button class="chart-period-btn" data-period="1m">1M</button>
+                                            <button class="chart-period-btn" data-period="3m">3M</button>
+                                            <button class="chart-period-btn" data-period="6m">6M</button>
+                                            <button class="chart-period-btn active" data-period="1y">1Y</button>
+                                            <button class="chart-period-btn" data-period="3y">3Y</button>
+                                        </div>
+                                    </div>
+                                    <div class="chart-container">
+                                        <canvas id="priceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab 4: Logs (분석 로그) -->
+                            <div class="sub-tab-content" data-sub-tab-content="logs">
+                                <div class="logs-section">
+                                    <div class="logs-header">
+                                        <h3 class="logs-title">분석 로그</h3>
+                                        <button class="btn-export-pdf" id="btnExportPDF" style="display: none;">
+                                            <span class="pdf-icon">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path
+                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                    </path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                                </svg>
+                                            </span>
+                                            <span class="pdf-text">PDF 리포트 다운로드</span>
+                                        </button>
+                                    </div>
+                                    <div class="logs-container" id="logsContainer">
+                                        <!-- Populated by JS -->
+                                        <div class="log-placeholder">분석 로그가 없습니다.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Fund Manager Tab -->
+            <div class="tab-content" data-tab-content="fund-manager">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Fund Manager</h2>
+                        <p class="section-subtitle">AI 기반 맞춤형 포트폴리오 설계 및 운용</p>
+                    </div>
+
+                    <!-- Fund Manager Steps -->
+                    <div class="fund-manager-container">
+                        <!-- Step Indicator -->
+                        <div class="fund-steps">
+                            <div class="fund-step active" data-step="1">
+                                <div class="step-number">1</div>
+                                <div class="step-label">투자 성향 분석</div>
+                            </div>
+                            <div class="fund-step-divider"></div>
+                            <div class="fund-step" data-step="2">
+                                <div class="step-number">2</div>
+                                <div class="step-label">포트폴리오 생성</div>
+                            </div>
+                            <div class="fund-step-divider"></div>
+                            <div class="fund-step" data-step="3">
+                                <div class="step-number">3</div>
+                                <div class="step-label">결과 확인</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Survey -->
+                        <div class="fund-step-content active" data-step-content="1">
+                            <div class="survey-card">
+                                <h3 class="survey-title">투자 성향 설문</h3>
+                                <p class="survey-description">귀하의 투자 목표와 성향을 파악하여 최적의 포트폴리오를 설계합니다.</p>
+
+                                <form class="survey-form" id="surveyForm">
+                                    <!-- 투자 금액 -->
+                                    <div class="form-group">
+                                        <label class="form-label">투자 가능 금액 (단위: 백만 원)</label>
+                                        <div style="position:relative;">
+                                            <input type="number" class="form-input" name="investable_amount_raw"
+                                                placeholder="예: 50" min="1" required
+                                                style="padding-right:110px; font-weight:600; font-size:1.1em;">
+                                            <span
+                                                style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#64748b; font-weight:bold; pointer-events:none;">000,000
+                                                원</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 투자 기간 -->
+                                    <div class="form-group">
+                                        <label class="form-label">투자 기간 (개월)</label>
+                                        <select class="form-select" name="investment_period_months" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="12">1년</option>
+                                            <option value="24">2년</option>
+                                            <option value="36">3년</option>
+                                            <option value="60">5년</option>
+                                            <option value="120">10년</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 목표 수익률 -->
+                                    <div class="form-group">
+                                        <label class="form-label">목표 연 수익률 (%)</label>
+                                        <select class="form-select" name="target_annual_return_pct" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="5">5% (안정적)</option>
+                                            <option value="10">10% (균형)</option>
+                                            <option value="15">15% (공격적)</option>
+                                            <option value="20">20% (매우 공격적)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 손실 허용도 -->
+                                    <div class="form-group">
+                                        <label class="form-label">최대 손실 허용 범위 (%)</label>
+                                        <select class="form-select" name="max_loss_tolerance_pct" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="10">10% (보수적)</option>
+                                            <option value="20">20% (중립)</option>
+                                            <option value="30">30% (공격적)</option>
+                                            <option value="50">50% (매우 공격적)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 소득 안정성 -->
+                                    <div class="form-group">
+                                        <label class="form-label">소득 안정성</label>
+                                        <select class="form-select" name="income_stability" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="stable">안정적 (정규직, 공무원 등)</option>
+                                            <option value="moderate">보통 (프리랜서, 자영업 등)</option>
+                                            <option value="unstable">불안정 (일용직 등)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 비상 자금 -->
+                                    <div class="form-group">
+                                        <label class="form-label">비상 자금 보유 (개월치 생활비)</label>
+                                        <select class="form-select" name="emergency_fund_months" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="3">3개월</option>
+                                            <option value="6">6개월</option>
+                                            <option value="12">12개월</option>
+                                            <option value="24">24개월 이상</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 투자 경험 -->
+                                    <div class="form-group">
+                                        <label class="form-label">투자 경험</label>
+                                        <select class="form-select" name="investment_experience" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="beginner">초급 (1년 미만)</option>
+                                            <option value="intermediate">중급 (1-5년)</option>
+                                            <option value="advanced">고급 (5년 이상)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 지식 수준 -->
+                                    <div class="form-group">
+                                        <label class="form-label">금융 지식 수준</label>
+                                        <select class="form-select" name="knowledge_level" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="low">낮음</option>
+                                            <option value="medium">보통</option>
+                                            <option value="high">높음</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 손실 반응 -->
+                                    <div class="form-group">
+                                        <label class="form-label">손실 발생 시 반응</label>
+                                        <select class="form-select" name="loss_reaction" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="panic">공포 (즉시 매도 충동)</option>
+                                            <option value="concern">우려 (불안하지만 견딤)</option>
+                                            <option value="acceptance">수용 (장기 관점 유지)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 변동성 편안함 -->
+                                    <div class="form-group">
+                                        <label class="form-label">변동성에 대한 편안함</label>
+                                        <select class="form-select" name="volatility_comfort" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="low">낮음 (안정적 선호)</option>
+                                            <option value="medium">보통 (적당한 변동 수용)</option>
+                                            <option value="high">높음 (큰 변동 수용)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 집중도 선호 -->
+                                    <div class="form-group">
+                                        <label class="form-label">종목 집중도 선호</label>
+                                        <select class="form-select" name="concentration_preference" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="diversified">분산 (20개 이상 종목)</option>
+                                            <option value="focused">집중 (10-15개 종목)</option>
+                                            <option value="concentrated">고집중 (5-10개 종목)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 리밸런싱 허용 -->
+                                    <div class="form-group">
+                                        <label class="form-label">리밸런싱 빈도 허용</label>
+                                        <select class="form-select" name="rebalance_tolerance" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="frequent">빈번 (월 1회)</option>
+                                            <option value="moderate">보통 (분기 1회)</option>
+                                            <option value="patient">인내 (연 1-2회)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 환율 노출 -->
+                                    <div class="form-group">
+                                        <label class="form-label">해외 투자 (환율 노출) 허용</label>
+                                        <select class="form-select" name="fx_exposure_tolerance" required>
+                                            <option value="">선택하세요</option>
+                                            <option value="low">낮음 (국내 위주)</option>
+                                            <option value="medium">보통 (50:50)</option>
+                                            <option value="high">높음 (해외 위주)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"
+                                        style="margin-top:25px; padding-top:20px; border-top:1px dashed #e2e8f0;">
+                                        <label class="form-label"
+                                            style="display:flex; align-items:center; cursor:pointer; user-select:none;">
+                                            <input type="checkbox" id="hasExistingHoldings"
+                                                style="margin-right:10px; accent-color:#3b82f6;">
+                                            <span style="font-weight:600; color:#1e293b;">현재 보유하고 있는 종목이 있습니다. (기존
+                                                종목 최적화)</span>
+                                        </label>
+
+                                        <div id="existingHoldingsSection"
+                                            style="display:none; margin-top:15px; padding:15px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
+                                            <p
+                                                style="font-size:0.9em; color:#64748b; margin-top:0; margin-bottom:10px;">
+                                                보유 중인 종목을 입력하시면, AI가 이를 분석하여 비중 확대/축소/매도 의견을 반영한 최적 포트폴리오를 제안합니다.
+                                            </p>
+                                            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                                                <input type="text" id="holdingTickerInput"
+                                                    placeholder="종목 (예: 삼성전자, AAPL)" class="form-select"
+                                                    style="flex:2; border:1px solid #cbd5e1;">
+                                                <input type="number" id="holdingAmountInput" placeholder="평가금액 (원)"
+                                                    class="form-select" style="flex:1; border:1px solid #cbd5e1;">
+                                                <button type="button" id="btnAddHolding"
+                                                    style="padding:8px 16px; background:#3b82f6; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">추가</button>
+                                            </div>
+                                            <ul id="holdingsList"
+                                                style="list-style:none; padding:0; margin:0; max-height:150px; overflow-y:auto; border-radius:4px; border:1px solid #f1f5f9; background:#fff;">
+                                                <!-- Holdings will be added here -->
+                                            </ul>
+                                            <div id="totalHoldingsAmount"
+                                                style="margin-top:10px; text-align:right; font-weight:bold; color:#334155; font-size:0.9em; border-top:1px solid #e2e8f0; padding-top:8px;">
+                                                총 보유액: 0원</div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" id="btnStartAnalysis" class="btn-primary btn-large"
+                                        onclick="handleSurveySubmit(event)">
+                                        분석 시작하기
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Results (Clean Re-write) -->
+                        <div class="fund-step-content" data-step-content="2" style="display: none;">
+                            <div class="loading-state" id="fundLoading"
+                                style="display: block !important; width: 100% !important; min-height: 500px !important; padding: 80px 20px !important; text-align: center !important; background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 16px !important; margin-top: 20px !important; visibility: visible !important; opacity: 1 !important;">
+                                <div class="loading-spinner" style="display: block; margin: 0 auto 30px auto;"></div>
+                                <h3 class="loading-title"
+                                    style="margin-top:20px; color:#1e293b; font-size: 1.5rem; font-weight: 700;">AI
+                                    펀드매니저가 분석 중입니다</h3>
+                                <p class="loading-text"
+                                    style="color:#64748b; margin-bottom:30px; font-size: 1.1rem; line-height: 1.6;">투자
+                                    성향 데이터를 바탕으로<br>최적의 포트폴리오를 설계하고 있습니다.</p>
+
+                                <div class="loading-progress-container"
+                                    style="width: 100%; max-width: 500px; height: 10px; background: #f1f5f9; border-radius: 5px; margin: 0 auto 20px; overflow: hidden; border: 1px solid #e2e8f0;">
+                                    <div class="loading-progress-bar" id="fundProgressBar"
+                                        style="width: 5%; height: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb); transition: width 0.5s ease; border-radius: 5px;">
+                                    </div>
+                                </div>
+
+                                <p class="loading-status" id="fundLoadingStatus"
+                                    style="font-size:1rem; color:#3b82f6; font-weight: 600;">분석 엔진 초기화 중...</p>
+                            </div>
+
+                            <div class="fund-results" id="fundResults" style="display: none;">
+                                <!-- IPS Summary -->
+                                <div class="ips-card">
+                                    <h3 class="ips-title">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" style="margin-right:8px;">
+                                            <path
+                                                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                            </path>
+                                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                        </svg>
+                                        투자 정책서 (IPS)
+                                    </h3>
+                                    <div class="ips-content" id="ipsContent">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Portfolio Comparison -->
+                                <div class="portfolios-section">
+                                    <h3 class="portfolios-title">추천 포트폴리오 (3가지)</h3>
+                                    <p class="portfolios-subtitle">아래 3가지 포트폴리오는 우열이 아닌, 서로 다른 투자 철학을 대표합니다.</p>
+
+                                    <div class="portfolios-grid" id="portfoliosGrid">
+                                        <!-- Portfolio cards populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Detail View (Initially Hidden) -->
+                        <div class="fund-step-content" data-step-content="3" style="display: none;">
+                            <div class="portfolio-detail" id="portfolioDetail">
+                                <!-- Selected portfolio details -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Unified Side Menu (☰) -->
+    <aside class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h3 class="side-menu-title">메뉴</h3>
+            <button class="side-menu-close" id="sideMenuClose">✕</button>
+        </div>
+
+        <!-- Side Menu Tabs -->
+        <div class="side-menu-tabs">
+            <button class="side-menu-tab active" data-side-tab="chatbot">
+                <span class="side-tab-label">AI 챗봇</span>
+            </button>
+            <button class="side-menu-tab" data-side-tab="hot-stocks">
+                <span class="side-tab-label">급등주</span>
+            </button>
+        </div>
+
+        <!-- Chatbot Content -->
+        <div class="side-menu-content active" data-side-content="chatbot">
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chat-message assistant">
+                    <div class="message-content">
+                        안녕하세요! 당신의 AI챗봇 스톡스입니다! 무엇을 도와드릴까요?<br />
+                        예: '삼성전자 분석해줘', 'RSI가 뭐야?'
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatbot-input-container">
+                <div class="chatbot-controls">
+                    <button class="voice-button" id="voiceInput" title="음성 입력">
+                        <img src="mic.svg" alt="음성 입력">
+                    </button>
+                    <button class="voice-toggle" id="voiceToggle" title="음성 출력">
+                        <img src="volume_up.svg" alt="음성 출력">
+                    </button>
+                </div>
+                <div class="chatbot-input-wrapper">
+                    <input type="text" class="chatbot-input" id="chatbotInput" placeholder="메시지를 입력하세요..."
+                        autocomplete="off" />
+                    <button class="chatbot-send" id="chatbotSend">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hot Stocks Content -->
+        <div class="side-menu-content" data-side-content="hot-stocks">
+            <div class="hot-stocks-container">
+                <h4 class="hot-stocks-title">오늘의 급등주</h4>
+                <div class="hot-stocks-list" id="sideHotStocksList">
+                    <div class="hot-stock-item">
+                        <div class="hot-stock-rank">1</div>
+                        <div class="hot-stock-name">데이터 로딩 중...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="side_menu.js?v=1.6"></script>
+    <script src="app.js?v=1.6"></script>
+    <script src="fund_manager.js?v=2.0"></script>
+</body>
+
+</html>
